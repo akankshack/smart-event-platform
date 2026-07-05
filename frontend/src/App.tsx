@@ -17,10 +17,10 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <div class="flex flex-col min-h-screen bg-darkBg text-gray-100">
+        <div className="flex flex-col min-h-screen bg-darkBg text-gray-100">
           <Navbar />
           
-          <main class="flex-grow pb-16">
+          <main className="flex-grow pb-16">
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />

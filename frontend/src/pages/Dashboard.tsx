@@ -24,16 +24,17 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-8">
       {/* Header and User Details */}
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-6">
-        <div class="space-y-1">
-          <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center space-x-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center space-x-2">
             <Calendar className="h-6 w-6 text-primary" />
             <span>SmartEvent Dashboard</span>
           </h1>
-          <p class="text-xs md:text-sm text-gray-400">
-            Welcome back, <span class="font-semibold text-white">{user.name}</span>. You are logged in as <span class="text-primary-light font-medium">{user.role}</span>.
+          <p className="text-xs md:text-sm text-gray-400">
+            Welcome back, <span className="font-semibold text-white">{user.name}</span>. You are logged in as{' '}
+            <span className="text-primary-light font-medium">{user.role}</span>.
           </p>
         </div>
       </div>
