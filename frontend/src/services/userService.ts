@@ -8,36 +8,44 @@ export interface EventFilterOptions {
 }
 
 export const userService = {
-  // Fetch events based on search keyword, category, and status filters
-  getEvents: async (filters: EventFilterOptions): Promise<Event[]> => {
+  // Fetch all public events
+  getEvents: async (filters: EventFilterOptions = {}): Promise<Event[]> => {
     const params = new URLSearchParams();
-    if (filters.search) params.append('search', filters.search);
-    if (filters.category) params.append('category', filters.category);
-    if (filters.status) params.append('status', filters.status);
 
-    const response = await api.get(`/users/events?${params.toString()}`);
+    if (filters.search && filters.search !== '') params.append('search', filters.search);
+    if (filters.category && filters.category !== 'All') params.append('category', filters.category);
+    if (filters.status && filters.status !== 'All') params.append('status', filters.status);
+
+    const queryString = params.toString();
+    const url = queryString ? `/events?${queryString}` : '/events';
+
+    const response = await api.get(url);
     return response.data.data;
   },
 
-  // Get details of a single event (including registered count and available slots)
+  // Get details of one event
   getEventById: async (id: string): Promise<Event> => {
-    const response = await api.get(`/users/events/${id}`);
+    const response = await api.get(`/events/${id}`);
     return response.data.data;
   },
 
   // Register for an event
-  registerForEvent: async (eventId: string): Promise<{ success: boolean; message: string }> => {
-    const response = await api.post(`/users/events/${eventId}/register`);
+  registerForEvent: async (
+    eventId: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const response = await api.post(`/events/${eventId}/register`);
     return response.data;
   },
 
-  // Cancel registration for an event
-  cancelRegistration: async (eventId: string): Promise<{ success: boolean; message: string }> => {
-    const response = await api.delete(`/users/events/${eventId}/register`);
+  // Cancel registration
+  cancelRegistration: async (
+    eventId: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const response = await api.delete(`/events/${eventId}/register`);
     return response.data;
   },
 
-  // Get events that the user is registered for
+  // Get logged-in user's registered events
   getRegisteredEvents: async (): Promise<Event[]> => {
     const response = await api.get('/users/my-registrations');
     return response.data.data;
