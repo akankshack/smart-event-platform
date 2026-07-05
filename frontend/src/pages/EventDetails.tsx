@@ -14,6 +14,29 @@ import {
   CheckCircle,
 } from 'lucide-react';
 
+const getDefaultImage = (category: string) => {
+  switch (category) {
+    case 'Conference':
+      return 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80';
+    case 'Workshop':
+      return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80';
+    case 'Seminar':
+      return 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=80';
+    case 'Hackathon':
+      return 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80';
+    case 'Webinar':
+      return 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80';
+    case 'Meetup':
+      return 'https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80';
+    case 'Cultural':
+      return 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=80';
+    case 'Sports':
+      return 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1200&q=80';
+    default:
+      return 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=1200&q=80';
+  }
+};
+
 const EventDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
@@ -133,7 +156,6 @@ const EventDetails: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 md:px-8 py-8 space-y-6">
-      {/* Back button */}
       <Link
         to="/"
         className="inline-flex items-center space-x-2 text-gray-400 hover:text-white transition text-sm"
@@ -157,7 +179,6 @@ const EventDetails: React.FC = () => {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Side: Image & Description */}
         <div className="lg:col-span-2 space-y-6">
           <div className="relative rounded-2xl overflow-hidden border border-white/5 h-64 md:h-96 bg-white/5">
             <img
@@ -187,7 +208,6 @@ const EventDetails: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side */}
         <div className="space-y-6">
           <div className="glass-panel p-6 rounded-2xl border border-white/5 space-y-6">
             <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
@@ -231,7 +251,7 @@ const EventDetails: React.FC = () => {
                     {event.registeredCount} / {event.capacity} slots filled
                   </p>
                   <p className="text-xs text-gray-500 font-medium">
-                    {event.availableSlots} slots available
+                    {event.availableSlots ?? 0} slots available
                   </p>
                 </div>
               </div>
@@ -250,7 +270,6 @@ const EventDetails: React.FC = () => {
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="pt-4 border-t border-white/5">
               {event.status === 'Completed' ? (
                 <div className="bg-white/5 border border-white/10 text-center py-2.5 rounded-xl text-xs font-semibold text-gray-400 uppercase tracking-wider">
@@ -267,14 +286,14 @@ const EventDetails: React.FC = () => {
               ) : (
                 <button
                   onClick={handleRegister}
-                  disabled={actionLoading || (event.availableSlots !== undefined && event.availableSlots <= 0)}
+                  disabled={actionLoading || (event.availableSlots ?? 0) <= 0}
                   className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark disabled:opacity-50 text-white text-sm font-bold py-3 rounded-xl shadow-lg hover:shadow-primary/20 transition-all duration-200"
                 >
                   {actionLoading
                     ? 'Processing...'
                     : !user
                     ? 'Login to Register'
-                    : event.availableSlots !== undefined && event.availableSlots <= 0
+                    : (event.availableSlots ?? 0) <= 0
                     ? 'Event Full'
                     : 'Register for Event'}
                 </button>
