@@ -18,20 +18,36 @@ const upload = require('../middleware/uploadMiddleware');
 
 // ================= PUBLIC ROUTES =================
 
-// Get all events for homepage
+// Get all events
 router.get('/', getAllEvents);
 
-// Get single event details page
+// Get organizer's own events
+router.get(
+  '/my-events',
+  protect,
+  authorize('Organizer', 'Admin'),
+  getOrganizerEvents
+);
+
+// Get single event
 router.get('/:id', getEventById);
 
 
 // ================= PROTECTED USER ROUTES =================
 
 // Register for an event
-router.post('/:id/register', protect, registerForEvent);
+router.post(
+  '/:id/register',
+  protect,
+  registerForEvent
+);
 
 // Cancel registration
-router.delete('/:id/register', protect, cancelRegistration);
+router.delete(
+  '/:id/register',
+  protect,
+  cancelRegistration
+);
 
 
 // ================= ORGANIZER / ADMIN ROUTES =================
@@ -43,14 +59,6 @@ router.post(
   authorize('Organizer', 'Admin'),
   upload.single('poster'),
   createEvent
-);
-
-// Get organizer's own events
-router.get(
-  '/my-events',
-  protect,
-  authorize('Organizer', 'Admin'),
-  getOrganizerEvents
 );
 
 // Update event
